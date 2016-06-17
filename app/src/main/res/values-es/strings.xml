@@ -10,4 +10,5 @@
     <string name="detail_btnFragmentB">Fragmento B</string>
     <string name="fraglist_btnAdd">Agregar</string>
     <string name="fraglist_hintItemText">Texto del elemento</string>
+    <string name="summary_title">Resumen</string>
 </resources>

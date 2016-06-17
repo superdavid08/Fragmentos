@@ -47,15 +47,14 @@ public class FragmentList extends Fragment {
                 AdapterItemList adapter = (AdapterItemList)parent.getAdapter();
                 ModelItem modelItem = adapter.getItem(position);
                 ModelItem modelItem2 = array.get(position);
-                Toast.makeText(getActivity(),modelItem2.title, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),modelItem2.title, Toast.LENGTH_SHORT).show();
 
                 //Lo mandamos a la activity de Resumen
-                /*
-                Intent intent = new Intent(view.getContext(), SummaryActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), SummaryActivity.class);
                 intent.putExtra("key_title", modelItem2.title);
-                intent.putExtra("key_description", modelItem2.title);
-                intent.putExtra("key_resourceId", modelItem2.title);
-                startActivity(intent);*/
+                intent.putExtra("key_description", modelItem2.description);
+                //intent.putExtra("key_resourceId", modelItem2.title);
+                startActivity(intent);
             }
         });
 
@@ -68,8 +67,8 @@ public class FragmentList extends Fragment {
                 //Si tiene texto lo mandamos al adapterList como un registro más
                 if(!TextUtils.isEmpty(itemData)){
                    ModelItem item = new ModelItem();
-                    item.title = itemData;
-                    item.description = "Desc " + counter;
+                    item.title =  "Desc " + counter;
+                    item.description = itemData;
                     item.resourceId = isWifi ? R.mipmap.ic_launcher : R.mipmap.ic_launcher2;
                     array.add(item);
                     listView.setAdapter(new AdapterItemList(getActivity(),array));

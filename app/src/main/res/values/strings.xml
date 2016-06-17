@@ -9,4 +9,5 @@
     <string name="detail_btnFragmentB">Fragment B</string>
     <string name="fraglist_btnAdd">Add</string>
     <string name="fraglist_hintItemText">Item text</string>
+    <string name="summary_title">Summary</string>
 </resources>
