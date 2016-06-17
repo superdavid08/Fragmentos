@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fragmentos</string>
+    <string name="main_hintUsername">Nombre de Usuario</string>
+    <string name="main_hintPassword">Contraseña</string>
+    <string name="main_btnLogin">Iniciar Sesión</string>
+    <string name="main_errorLogin">Nombre de usuario o contraseña incorrectos</string>
+    <string name="main_authenticated">Autenticado</string>
+    <string name="detail_btnFragmentA">Fragmento A</string>
+    <string name="detail_btnFragmentB">Fragmento B</string>
+</resources>
