@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import elsuper.david.com.fragmentos.fragment.FragmentList;
 import elsuper.david.com.fragmentos.fragment.FragmentProfile;
 
 /**
@@ -42,12 +43,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     //region Métodos
     private void changeFragmentB() {
-        //FragmentProfile f = FragmentProfile.newInstance("Adios mundo");
-        //////getFragmentManager().beginTransaction().replace(R.id.FragmentFolder, new FragmentList()).commit();
-        //getFragmentManager().beginTransaction().replace(R.id.FragmentFolder, f).commit();
-        //getFragmentManager().beginTransaction().replace(R.id.FragmentFolder, new FragmentProfile()).commit();
-        //getFragmentManager().findFragmentById(R.id.fragmentxml);
-
+        getFragmentManager().beginTransaction().replace(R.id.detail_flFragmentFolder, new FragmentList()).commit();
     }
 
     private void changeFragmentA() {

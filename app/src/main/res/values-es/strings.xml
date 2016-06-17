@@ -8,4 +8,6 @@
     <string name="main_authenticated">Autenticado</string>
     <string name="detail_btnFragmentA">Fragmento A</string>
     <string name="detail_btnFragmentB">Fragmento B</string>
+    <string name="fraglist_btnAdd">Agregar</string>
+    <string name="fraglist_hintItemText">Texto del elemento</string>
 </resources>

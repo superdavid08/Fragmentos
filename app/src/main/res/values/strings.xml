@@ -7,4 +7,6 @@
     <string name="main_authenticated">Authenticated</string>
     <string name="detail_btnFragmentA">Fragment A</string>
     <string name="detail_btnFragmentB">Fragment B</string>
+    <string name="fraglist_btnAdd">Add</string>
+    <string name="fraglist_hintItemText">Item text</string>
 </resources>
