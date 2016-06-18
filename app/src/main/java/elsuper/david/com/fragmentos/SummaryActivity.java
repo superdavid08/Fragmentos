@@ -1,5 +1,6 @@
 package elsuper.david.com.fragmentos;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -33,6 +34,7 @@ public class SummaryActivity extends AppCompatActivity {
         //Para la imagen, generamos un número aleatorio
         Random random = new Random();
         int num = (int)(random.nextDouble() * 6);
+
         switch (num) {
             case 1:case 0:
                 img.setImageResource(R.mipmap.ic_launcher);

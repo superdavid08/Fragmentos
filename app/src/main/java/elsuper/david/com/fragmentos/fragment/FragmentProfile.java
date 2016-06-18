@@ -42,14 +42,13 @@ public class FragmentProfile extends Fragment {
         String user = getArguments().getString("user_key");
         txtUser.setText(user);
 
-        //Dependiendo de la inicial del nombre del usuario aignamos la imagen
-        if(user.matches("[A-Ma-m]{1}.*")){
-            ImageView imgProfile = (ImageView)view.findViewById(R.id.fragProfile_imgProfile);
+        //Dependiendo de la inicial del nombre del usuario asignamos la imagen
+        ImageView imgProfile = (ImageView)view.findViewById(R.id.fragProfile_imgProfile);
+        if(user.matches("^[a-mA-M].*")){
             imgProfile.setImageResource(R.mipmap.ic_launcher);
         }
-        else if(user.matches("[N-Zn-z]{1}.*")){
-            ImageView imgProfile = (ImageView)view.findViewById(R.id.fragProfile_imgProfile);
-            imgProfile.setImageResource(R.mipmap.ic_launcher2);
+        else if(user.matches("^[n-zN-Z].*")){
+            imgProfile.setImageResource(R.mipmap.ic_launcher3);
         }
 
         return view;

@@ -52,8 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 pbLoading.setVisibility(View.GONE);
                 //Validamos con algunos usuarios específicos
-                if((user.equals("unam") || user.equals("david") || user.equals("giselle")
-                        || user.equals("norma") || user.equals("andres")) && pass.equals("curso")){
+                if((user.equals("unam") || user.equals("Unam") ||
+                        user.equals("david") || user.equals("David") ||
+                        user.equals("giselle") || user.equals("Giselle") ||
+                        user.equals("norma") || user.equals("Norma") ||
+                        user.equals("andres") || user.equals("andres"))
+                        && pass.equals("curso")){
                     //Mostramos mensaje de éxito
                     Toast.makeText(getApplicationContext(), R.string.main_authenticated, Toast.LENGTH_SHORT).show();
                     //Enviamos a la Activity de Perfil y agregamos su nombre como parámetro
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else
                     Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();
             }
-        }, 4000 * 1);
+        }, 2000 * 1);
     }
 }
 
