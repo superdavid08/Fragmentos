@@ -21,6 +21,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        //Obtenemos el Extra que contiene el username
         username = getIntent().getExtras().getString("keyUser");
 
         findViewById(R.id.detail_btnFragmentA).setOnClickListener(this);
@@ -32,10 +33,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.detail_btnFragmentA:
                 changeFragmentA();
-                //setFragment(FragmentProfile.newInstance(user));
                 break;
             case R.id.detail_btnFragmentB:
-                //setFragment(new FragmentItem());
                 changeFragmentB();
                 break;
         }
@@ -43,10 +42,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     //region Métodos
     private void changeFragmentB() {
+        //Mostramos el Fragment de Lista
         getFragmentManager().beginTransaction().replace(R.id.detail_flFragmentFolder, new FragmentList()).commit();
     }
 
     private void changeFragmentA() {
+        //Mostramos el Fragmen de Perfil y le pasamos el username
         FragmentProfile f = FragmentProfile.newInstance(username);
         getFragmentManager().beginTransaction().replace(R.id.detail_flFragmentFolder, f).commit();
     }

@@ -52,23 +52,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 pbLoading.setVisibility(View.GONE);
                 //Validamos con algunos usuarios específicos
-                if((user.equals("unam") || user.equals("Unam") ||
-                        user.equals("david") || user.equals("David") ||
-                        user.equals("giselle") || user.equals("Giselle") ||
-                        user.equals("norma") || user.equals("Norma") ||
-                        user.equals("andres") || user.equals("andres"))
-                        && pass.equals("curso")){
+                if((user.toLowerCase().equals("unam") || user.toLowerCase().equals("david") ||
+                        user.toLowerCase().equals("giselle") || user.toLowerCase().equals("norma") ||
+                        user.toLowerCase().equals("andres")) && pass.equals("curso")){
                     //Mostramos mensaje de éxito
                     Toast.makeText(getApplicationContext(), R.string.main_authenticated, Toast.LENGTH_SHORT).show();
-                    //Enviamos a la Activity de Perfil y agregamos su nombre como parámetro
+                    //Enviamos al usuario a la Activity de Perfil y agregamos su nombre como parámetro
                     Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
-                    intent.putExtra("keyUser", user);//
+                    intent.putExtra("keyUser", user);
                     startActivity(intent);
                 }
                 else
                     Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();
             }
-        }, 2000 * 1);
+        }, 1000 * 1);
     }
 }
 

@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+/**
+ * Created by Andrés David García Gómez
+ */
 public class SummaryActivity extends AppCompatActivity {
 
     private TextView txtTitle;
@@ -24,14 +27,14 @@ public class SummaryActivity extends AppCompatActivity {
         txtDescription = (TextView)findViewById(R.id.summary_textDescription);
         img = (ImageView)findViewById(R.id.summary_img);
 
-        //Les ponemos sus valores
+        //Les ponemos sus valores con la información que viene en los Extras
         String title = getIntent().getExtras().getString("key_title");
         String description = getIntent().getExtras().getString("key_description");
 
         txtTitle.setText(title);
         txtDescription.setText(description);
 
-        //Para la imagen, generamos un número aleatorio
+        //Para la imagen, generamos un número aleatorio y, según el número, se muestra una imagen diferente
         Random random = new Random();
         int num = (int)(random.nextDouble() * 6);
 

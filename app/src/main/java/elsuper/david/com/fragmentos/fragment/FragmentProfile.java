@@ -17,7 +17,6 @@ import elsuper.david.com.fragmentos.R;
 public class FragmentProfile extends Fragment {
 
     private ImageView imgProfile;
-    private boolean change=true;
 
     public static FragmentProfile newInstance(String name)
     {
@@ -38,15 +37,17 @@ public class FragmentProfile extends Fragment {
 
         //Obtenemos el textview para poner el nombre del usuario
         TextView txtUser = (TextView)view.findViewById(R.id.fragProfile_txtUsername);
-        //Obtenemos el nombre del usuario y lo asignamos
+        //Obtenemos el nombre del usuario y lo mostramos (en minúsculas)
         String user = getArguments().getString("user_key");
-        txtUser.setText(user);
+        txtUser.setText(user.toLowerCase());
 
         //Dependiendo de la inicial del nombre del usuario asignamos la imagen
-        ImageView imgProfile = (ImageView)view.findViewById(R.id.fragProfile_imgProfile);
+        //A-M muestra imagen ic_Launcher
+        imgProfile = (ImageView)view.findViewById(R.id.fragProfile_imgProfile);
         if(user.matches("^[a-mA-M].*")){
             imgProfile.setImageResource(R.mipmap.ic_launcher);
         }
+        //N-Z muestra imagen ic_Launcher3
         else if(user.matches("^[n-zN-Z].*")){
             imgProfile.setImageResource(R.mipmap.ic_launcher3);
         }
