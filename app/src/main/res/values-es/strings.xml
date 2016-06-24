@@ -6,9 +6,22 @@
     <string name="main_btnLogin">Iniciar Sesión</string>
     <string name="main_errorLogin">Nombre de usuario o contraseña incorrectos</string>
     <string name="main_authenticated">Autenticado</string>
+    <string name="main_btnRegister">Registrar</string>
+    <string name="main_txtRegisterNeed">Registro necesario</string>
     <string name="detail_btnFragmentA">Fragmento A</string>
     <string name="detail_btnFragmentB">Fragmento B</string>
+    <string name="detail_txtSessionLenght" formatted="false">Duración de la sesión %s segundos</string>
+    <string name="detail_txtLastSession" formatted="false">Último inicio de sesión %s</string>
+    <string name="detail_txtFirstSession">Primera vez</string>
     <string name="fraglist_btnAdd">Agregar</string>
     <string name="fraglist_hintItemText">Texto del elemento</string>
+    <string name="fraglist_txtDeleteTitle">Borrar</string>
+    <string name="fraglist_txtQuestionDelete" formatted="false">¿Quieres eliminar el elemento? %s</string>
+    <string name="fraglist_txtDescription" formatted="false">Descripción %s</string>
     <string name="summary_title">Resumen</string>
+    <string name="reg_btnRegister">Registrar Usuario</string>
+    <string name="reg_txtSuccess">Registro exitoso!!</string>
+    <string name="reg_txtError">No se pudo registrar</string>
+    <string name="reg_txtEmpty">Usuario y password son requeridos</string>
+    <string name="reg_txtUserExist" formatted="false">Usuario %s ya existe</string>
 </resources>

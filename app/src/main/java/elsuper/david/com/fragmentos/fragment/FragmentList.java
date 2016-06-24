@@ -1,6 +1,8 @@
 package elsuper.david.com.fragmentos.fragment;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,10 +18,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import elsuper.david.com.fragmentos.Model.ModelItem;
+import elsuper.david.com.fragmentos.model.ModelItem;
 import elsuper.david.com.fragmentos.R;
 import elsuper.david.com.fragmentos.SummaryActivity;
 import elsuper.david.com.fragmentos.adapter.AdapterItemList;
+import elsuper.david.com.fragmentos.sql.ItemDataSource;
 
 /**
  * Created by Andrés David García Gómez
@@ -27,9 +30,18 @@ import elsuper.david.com.fragmentos.adapter.AdapterItemList;
 public class FragmentList extends Fragment {
 
     private ListView listView;
-    private List<ModelItem> array = new ArrayList<>();
+    //private List<ModelItem> array = new ArrayList<>();//se comenta para usar la tabla item_table
     private int counter;
     private boolean isWifi;
+    //Para usar la tabla item_table
+    private ItemDataSource itemDataSource;
+
+    //Para usar la tabla item_table
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        itemDataSource = new ItemDataSource(getActivity());
+    }
 
     @Nullable
     @Override
@@ -42,21 +54,54 @@ public class FragmentList extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 //Accedemos a la información del item
                 AdapterItemList adapter = (AdapterItemList)parent.getAdapter();
                 ModelItem modelItem = adapter.getItem(position);
-                ModelItem modelItem2 = array.get(position);
-                //Toast.makeText(getActivity(),modelItem2.title, Toast.LENGTH_SHORT).show();
+                //ModelItem modelItem2 = array.get(position); Para obtener los datos del Ejercicio1
+                //Toast.makeText(getActivity(),modelItem.title, Toast.LENGTH_SHORT).show();
 
                 //Lo mandamos a la activity de Resumen y agregamos Extras
                 Intent intent = new Intent(getActivity().getApplicationContext(), SummaryActivity.class);
-                intent.putExtra("key_title", modelItem2.title);
-                intent.putExtra("key_description", modelItem2.description);
+                intent.putExtra("key_title", modelItem.title);
+                intent.putExtra("key_description", modelItem.description);
                 //intent.putExtra("key_resourceId", modelItem2.title);
                 startActivity(intent);
             }
         });
+
+        //Bloque para usar la tabla item_table
+        List<ModelItem> modelItemList = itemDataSource.getAllItems();
+        isWifi = !(modelItemList.size() %2 == 0);
+        counter = modelItemList.size();
+        listView.setAdapter(new AdapterItemList(getActivity(),modelItemList));
+
+        //Bloque para borrar el registro seleccionado
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AdapterItemList adapter = (AdapterItemList)parent.getAdapter();
+                final ModelItem modelItem = adapter.getItem(position);
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.fraglist_txtDeleteTitle)
+                        .setMessage(String.format(getString(R.string.fraglist_txtQuestionDelete), modelItem.title))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                itemDataSource.deleteItem((modelItem));
+                                listView.setAdapter(new AdapterItemList(getActivity(),
+                                        itemDataSource.getAllItems()));
+                            }
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                }).setCancelable(false).create().show();
+                return true;
+            }
+        });
+
 
         final EditText etItemText = (EditText)view.findViewById(R.id.fraglist_ItemText);
         view.findViewById(R.id.fraglist_btnAddItem).setOnClickListener(new View.OnClickListener() {
@@ -66,12 +111,16 @@ public class FragmentList extends Fragment {
 
                 //Si tiene texto lo mandamos al adapterList como un registro más
                 if(!TextUtils.isEmpty(itemData)){
-                   ModelItem item = new ModelItem();
-                    item.title =  "Desc " + counter;
-                    item.description = itemData;
+                    ModelItem item = new ModelItem();
+                    item.title =  itemData;
+                    //item.description = "Desc " + counter;
+                    item.description = String.format(getString(R.string.fraglist_txtDescription), counter);
                     item.resourceId = isWifi ? R.mipmap.ic_launcher : R.mipmap.ic_launcher2;
-                    array.add(item);
-                    listView.setAdapter(new AdapterItemList(getActivity(),array));
+                    //array.add(item); //Para usar el adapter
+                    //Para usar la tabla item_table
+                    itemDataSource.saveItem(item);
+                    //listView.setAdapter(new AdapterItemList(getActivity(),array)); //Para usar el adapter
+                    listView.setAdapter(new AdapterItemList(getActivity(),itemDataSource.getAllItems()));
 
                     isWifi = !isWifi;
                     counter++;
@@ -79,8 +128,6 @@ public class FragmentList extends Fragment {
                 }
             }
         });
-
-
         return view;
     }
 }

@@ -5,9 +5,22 @@
     <string name="main_btnLogin">Login</string>
     <string name="main_errorLogin">Username or password incorrect</string>
     <string name="main_authenticated">Authenticated</string>
+    <string name="main_btnRegister">Register</string>
+    <string name="main_txtRegisterNeed">Register need</string>
     <string name="detail_btnFragmentA">Fragment A</string>
     <string name="detail_btnFragmentB">Fragment B</string>
+    <string name="detail_txtSessionLenght" formatted="false">Session lenght %s seconds</string>
+    <string name="detail_txtLastSession" formatted="false">Last signed %s</string>
+    <string name="detail_txtFirstSession">First time</string>
     <string name="fraglist_btnAdd">Add</string>
     <string name="fraglist_hintItemText">Item text</string>
+    <string name="fraglist_txtDeleteTitle">Delete</string>
+    <string name="fraglist_txtQuestionDelete" formatted="false">Do you want to delete the item? %s</string>
+    <string name="fraglist_txtDescription" formatted="false">Description %s</string>
     <string name="summary_title">Summary</string>
+    <string name="reg_btnRegister">Register User</string>
+    <string name="reg_txtSuccess">Successful registration!!</string>
+    <string name="reg_txtError">Could not register</string>
+    <string name="reg_txtEmpty">Username and password are required</string>
+    <string name="reg_txtUserExist" formatted="false">User %s already exists</string>
 </resources>

@@ -36,8 +36,10 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:visibility="invisible"
             android:layout_weight="1"
+            android:textAllCaps="false"
+            android:id="@+id/main_btnRegister"
+            android:hint="@string/main_btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

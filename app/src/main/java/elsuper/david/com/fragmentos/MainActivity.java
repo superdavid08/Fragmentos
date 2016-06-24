@@ -4,9 +4,18 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import elsuper.david.com.fragmentos.model.ModelUser;
+import elsuper.david.com.fragmentos.service.ServiceTimer;
+import elsuper.david.com.fragmentos.sql.UserDataSource;
+import elsuper.david.com.fragmentos.util.PreferenceUtil;
 
 /**
  * Created by Andrés David García Gómez
@@ -16,17 +25,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etUsername;
     private EditText etPassword;
     private View pbLoading;
+    private PreferenceUtil preferenceUtil;
+
+    //Para usar la tabla user_table //Ejercicio 2
+    private UserDataSource userDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Creamos la instancia para acceder a la tabla user_table
+        userDataSource = new UserDataSource(getApplicationContext());
+
         //Obtenemos los controles y seteamos el escucha del botón
         etUsername =  (EditText)findViewById(R.id.main_etUsername);
         etPassword =  (EditText)findViewById(R.id.main_etPassword);
         findViewById(R.id.main_btnLogin).setOnClickListener(this);
         pbLoading=findViewById(R.id.main_pbLoading);
+
+        //Se agrega para las preferencias 17-06-2016
+        findViewById(R.id.main_btnRegister).setOnClickListener(this);
+        preferenceUtil = new PreferenceUtil(getApplicationContext());
     }
 
     @Override
@@ -35,7 +55,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_btnLogin:
                 processData();
                 break;
+            //Se agrega para las preferencias 17-06-2016
+            case R.id.main_btnRegister:
+                launchRegister();
+                break;
         }
+    }
+
+    //Se agrega para las preferencias 17-06-2016
+    private void launchRegister() {
+        startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
     }
 
     private void processData() {
@@ -51,19 +80,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 pbLoading.setVisibility(View.GONE);
-                //Validamos con algunos usuarios específicos
-                if((user.toLowerCase().equals("unam") || user.toLowerCase().equals("david") ||
-                        user.toLowerCase().equals("giselle") || user.toLowerCase().equals("norma") ||
-                        user.toLowerCase().equals("andres")) && pass.equals("curso")){
-                    //Mostramos mensaje de éxito
-                    Toast.makeText(getApplicationContext(), R.string.main_authenticated, Toast.LENGTH_SHORT).show();
-                    //Enviamos al usuario a la Activity de Perfil y agregamos su nombre como parámetro
-                    Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
-                    intent.putExtra("keyUser", user);
-                    startActivity(intent);
+
+                if(!TextUtils.isEmpty(user) && !TextUtils.isEmpty(pass)){
+                    //Consultamos en la BD. //Ejercicio 2
+                    ModelUser modelUser = userDataSource.getUser(user,pass);
+
+                    if(modelUser != null){
+                        //Mostramos mensaje de éxito
+                        Toast.makeText(getApplicationContext(), R.string.main_authenticated, Toast.LENGTH_SHORT).show();
+                        //Enviamos al usuario a la Activity de Perfil y agregamos su nombre como parámetro
+                        Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
+                        intent.putExtra("keyUser", user);
+
+                        //Enviamos el dato del último inicio de sesión y guardamos el nuevo. //Ejercicio 2
+                        intent.putExtra("keyLastSession", modelUser.lastLogin);
+                        modelUser.lastLogin = new SimpleDateFormat("dd-MMM-yy hh:mm:ss").format(new Date());
+                        userDataSource.updateUser(modelUser);
+
+                        startActivity(intent);
+
+                        //Para usar el servicio de conteo
+                        startService(new Intent(getApplicationContext(), ServiceTimer.class));
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
-                    Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(getApplicationContext(), R.string.main_txtRegisterNeed, Toast.LENGTH_SHORT).show();
+                }
             }
         }, 1000 * 1);
     }
