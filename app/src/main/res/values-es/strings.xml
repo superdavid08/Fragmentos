@@ -13,6 +13,7 @@
     <string name="detail_txtSessionLenght" formatted="false">Duración de la sesión %s segundos</string>
     <string name="detail_txtLastSession" formatted="false">Último inicio de sesión %s</string>
     <string name="detail_txtFirstSession">Primera vez</string>
+    <string name="detail_txtUseTime">Tiempo de uso total</string>
     <string name="fraglist_btnAdd">Agregar</string>
     <string name="fraglist_hintItemText">Texto del elemento</string>
     <string name="fraglist_txtDeleteTitle">Borrar</string>
