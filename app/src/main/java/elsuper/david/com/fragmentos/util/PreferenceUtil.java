@@ -28,7 +28,7 @@ public class PreferenceUtil {
             return false;
     }
 
-    public  ModelUser getUser(){
+    public ModelUser getUser(){
         String user = sp.getString(Key.KEY_PREF_USER_NAME,null);
         String password = sp.getString(Key.KEY_PREF_USER_PASS,null);
 
@@ -36,6 +36,12 @@ public class PreferenceUtil {
             return  null;
 
         return new ModelUser(user,password);
+    }
+
+    //Ejercicio 2
+    public void deleteUser(){
+        sp.edit().putString(Key.KEY_PREF_USER_NAME, "").apply();
+        sp.edit().putString(Key.KEY_PREF_USER_PASS, "").apply();
     }
     //endregion
 

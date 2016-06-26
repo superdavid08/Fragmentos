@@ -53,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Obtenemos el control del checkbox de recordar credenciales. //Ejercicio 2
         cbRemember = (CheckBox)findViewById(R.id.main_cbRemember);
+
+        //Mostramos credenciales, si las hay, y mostramos el checkbox seleccionado //Ejercicio 2
+        ModelUser model = preferenceUtil.getUser();
+        if(model != null){
+            etUsername.setText(model.userName);
+            etPassword.setText(model.password);
+            cbRemember.setChecked(true);
+        }
     }
 
     @Override
@@ -109,8 +117,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startService(new Intent(getApplicationContext(), ServiceTimer.class));
 
                         //Si el checkbox de recordar credenciales está seleccionado, guardamos datos en preferencias
-                        //TODO
-
+                        //Ejercicio 2
+                        if(cbRemember.isChecked())
+                            preferenceUtil.saveUser(modelUser);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();
