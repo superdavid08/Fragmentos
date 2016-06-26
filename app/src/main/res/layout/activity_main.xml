@@ -52,4 +52,12 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <CheckBox
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/main_etPassword"
+        android:id="@+id/main_cbRemember"
+        android:text="@string/main_cbRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

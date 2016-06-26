@@ -1,12 +1,13 @@
 package elsuper.david.com.fragmentos;
 
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import elsuper.david.com.fragmentos.util.Key;
 
 /**
  * Created by Andrés David García Gómez
@@ -28,8 +29,8 @@ public class SummaryActivity extends AppCompatActivity {
         img = (ImageView)findViewById(R.id.summary_img);
 
         //Les ponemos sus valores con la información que viene en los Extras
-        String title = getIntent().getExtras().getString("key_title");
-        String description = getIntent().getExtras().getString("key_description");
+        String title = getIntent().getExtras().getString(Key.KEY_TITLE);
+        String description = getIntent().getExtras().getString(Key.KEY_DESCRIPTION);
 
         txtTitle.setText(title);
         txtDescription.setText(description);

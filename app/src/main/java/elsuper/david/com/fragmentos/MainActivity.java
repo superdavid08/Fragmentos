@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 import elsuper.david.com.fragmentos.model.ModelUser;
 import elsuper.david.com.fragmentos.service.ServiceTimer;
 import elsuper.david.com.fragmentos.sql.UserDataSource;
+import elsuper.david.com.fragmentos.util.Key;
 import elsuper.david.com.fragmentos.util.PreferenceUtil;
 
 /**
@@ -26,16 +28,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etPassword;
     private View pbLoading;
     private PreferenceUtil preferenceUtil;
-
     //Para usar la tabla user_table //Ejercicio 2
     private UserDataSource userDataSource;
+    private CheckBox cbRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Creamos la instancia para acceder a la tabla user_table
+        //Creamos la instancia para acceder a la tabla user_table //Ejercicio 2
         userDataSource = new UserDataSource(getApplicationContext());
 
         //Obtenemos los controles y seteamos el escucha del botón
@@ -44,9 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.main_btnLogin).setOnClickListener(this);
         pbLoading=findViewById(R.id.main_pbLoading);
 
-        //Se agrega para las preferencias 17-06-2016
+        //Seteamos el escucha para el botón de registro y creamos la instancia
+        //para las preferencias Ejercicio 2
         findViewById(R.id.main_btnRegister).setOnClickListener(this);
         preferenceUtil = new PreferenceUtil(getApplicationContext());
+
+        //Obtenemos el control del checkbox de recordar credenciales. //Ejercicio 2
+        cbRemember = (CheckBox)findViewById(R.id.main_cbRemember);
     }
 
     @Override
@@ -55,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_btnLogin:
                 processData();
                 break;
-            //Se agrega para las preferencias 17-06-2016
+            //Ejercicio 2
             case R.id.main_btnRegister:
                 launchRegister();
                 break;
         }
     }
 
-    //Se agrega para las preferencias 17-06-2016
+    //Lanzamos la Activity de registro. //Ejercicio 2
     private void launchRegister() {
         startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
     }
@@ -82,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pbLoading.setVisibility(View.GONE);
 
                 if(!TextUtils.isEmpty(user) && !TextUtils.isEmpty(pass)){
-                    //Consultamos en la BD. //Ejercicio 2
+                    //Consultamos en la BD para validar sus credenciales. //Ejercicio 2
                     ModelUser modelUser = userDataSource.getUser(user,pass);
 
                     if(modelUser != null){
@@ -90,10 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(getApplicationContext(), R.string.main_authenticated, Toast.LENGTH_SHORT).show();
                         //Enviamos al usuario a la Activity de Perfil y agregamos su nombre como parámetro
                         Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
-                        intent.putExtra("keyUser", user);
+                        intent.putExtra(Key.KEY_USER, user);
 
                         //Enviamos el dato del último inicio de sesión y guardamos el nuevo. //Ejercicio 2
-                        intent.putExtra("keyLastSession", modelUser.lastLogin);
+                        intent.putExtra(Key.KEY_LAST_SESSION, modelUser.lastLogin);
                         modelUser.lastLogin = new SimpleDateFormat("dd-MMM-yy hh:mm:ss").format(new Date());
                         userDataSource.updateUser(modelUser);
 
@@ -101,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         //Para usar el servicio de conteo
                         startService(new Intent(getApplicationContext(), ServiceTimer.class));
+
+                        //Si el checkbox de recordar credenciales está seleccionado, guardamos datos en preferencias
+                        //TODO
+
                     }
                     else {
                         Toast.makeText(getApplicationContext(), R.string.main_errorLogin, Toast.LENGTH_SHORT).show();

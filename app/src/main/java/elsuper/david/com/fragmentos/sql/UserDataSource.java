@@ -27,7 +27,9 @@ public class UserDataSource {
         contentValues.put(MySqliteHelper.COLUMN_USER_LOGIN,modelUser.userName);
         contentValues.put(MySqliteHelper.COLUMN_USER_PASSWORD,modelUser.password);
         contentValues.put(MySqliteHelper.COLUMN_USER_LASTLOGIN,modelUser.lastLogin);
-        return db.insert(MySqliteHelper.TABLENAME_USER, null, contentValues);
+        long result = db.insert(MySqliteHelper.TABLENAME_USER, null, contentValues);
+
+        return result;
     }
 
     public List<ModelUser> getAllUsers(){
@@ -43,7 +45,7 @@ public class UserDataSource {
             modelUserList.add(model);
         }
 
-        return  modelUserList;
+         return  modelUserList;
     }
 
     public void deleteUser(ModelUser modelUser){
@@ -61,7 +63,8 @@ public class UserDataSource {
             modelUser.userName = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_LOGIN));
             modelUser.password = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_PASSWORD));
             modelUser.lastLogin = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_LASTLOGIN));
-            return modelUser;
+
+           return modelUser;
         }
 
         return null;
@@ -78,6 +81,7 @@ public class UserDataSource {
             modelUser.userName = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_LOGIN));
             modelUser.password = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_PASSWORD));
             modelUser.lastLogin = cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_USER_LASTLOGIN));
+
             return modelUser;
         }
 

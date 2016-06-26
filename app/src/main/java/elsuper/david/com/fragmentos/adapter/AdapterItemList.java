@@ -20,10 +20,6 @@ import elsuper.david.com.fragmentos.R;
  */
 public class AdapterItemList extends ArrayAdapter<ModelItem>{
 
-    //urls para probar picasso
-    //private final String url1="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Biblioteca_Central_UNAM_M%C3%A9xico.jpg/250px-Biblioteca_Central_UNAM_M%C3%A9xico.jpg";
-    //private final String url2="https://www.unam.mx/sites/default/files/images/menu/library-345273_1280.jpg";
-
     public AdapterItemList(Context context, List<ModelItem> objects) {
         super(context, 0, objects);
     }
@@ -42,11 +38,6 @@ public class AdapterItemList extends ArrayAdapter<ModelItem>{
 
         //Seteamos los datos en el row
         ModelItem modelItem = getItem(position);
-
-        //urls para probar picasso
-        /*Picasso.with(getContext()).load(modelItem.resourceId==R.mipmap.ic_launcher2?
-                url1:url2).into(imgItem);*/
-
 
         txtItemTitle.setText(modelItem.title);
         txtItemDescription.setText(modelItem.description);

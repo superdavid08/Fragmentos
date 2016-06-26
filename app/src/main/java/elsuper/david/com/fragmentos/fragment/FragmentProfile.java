@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import elsuper.david.com.fragmentos.R;
+import elsuper.david.com.fragmentos.util.Key;
 
 /**
  * Created by Andrés David García Gómez
@@ -22,7 +23,7 @@ public class FragmentProfile extends Fragment {
     {
         FragmentProfile f = new FragmentProfile();
         Bundle b = new Bundle();
-        b.putString("user_key",name);
+        b.putString(Key.KEY_USER,name);
         f.setArguments(b);
 
         return f;
@@ -38,7 +39,7 @@ public class FragmentProfile extends Fragment {
         //Obtenemos el textview para poner el nombre del usuario
         TextView txtUser = (TextView)view.findViewById(R.id.fragProfile_txtUsername);
         //Obtenemos el nombre del usuario y lo mostramos (en minúsculas)
-        String user = getArguments().getString("user_key");
+        String user = getArguments().getString(Key.KEY_USER);
         txtUser.setText(user.toLowerCase());
 
         //Dependiendo de la inicial del nombre del usuario asignamos la imagen

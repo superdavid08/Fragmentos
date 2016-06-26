@@ -1,23 +1,20 @@
 package elsuper.david.com.fragmentos;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import elsuper.david.com.fragmentos.fragment.FragmentList;
 import elsuper.david.com.fragmentos.fragment.FragmentProfile;
 import elsuper.david.com.fragmentos.service.ServiceTimer;
-import elsuper.david.com.fragmentos.util.PreferenceUseApp;
+import elsuper.david.com.fragmentos.util.Key;
+import elsuper.david.com.fragmentos.util.PreferenceUtil;
 
 /**
  * Created by Andrés David García Gómez
@@ -26,20 +23,23 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private String username;
     private TextView txtTimer;
-    private TextView txtLastSession; //Ejercicio 2
-    private String session; //Ejercicio 2
-    private static final long MINUTE = 60; //Cantidad de segundos //Ejercicio 2
-    private static final long HOUR = 3600; //Ejercicio 2
-    private static final long DAY = 86400; //Ejercicio 2
-    private long counter; //Ejercicio 2
-    private PreferenceUseApp preferenceUseApp; //Ejercicio 2
+
+    //Ejercicio 2
+    private TextView txtLastSession;
+    private String session;
+    private static final long MINUTE = 60; //Cantidad de segundos
+    private static final long HOUR = 3600;
+    private static final long DAY = 86400;
+    private long counter;
+    private PreferenceUtil preferenceUtil;
 
     //Para usar el service
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            counter = intent.getExtras().getInt("timer");
-            //txtTimer.setText(String.format(getString(R.string.detail_txtSessionLenght), counter)); //Ejercicio 2
+            counter = intent.getExtras().getInt(Key.KEY_SERVICE_TIMER);
+            //Se comenta la sig línea. Ya no se pinta el contador tal cual, ahora se sumará al acumulado. //Ejercicio 2
+            //txtTimer.setText(String.format(getString(R.string.detail_txtSessionLenght), counter));
         }
     };
 
@@ -49,21 +49,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_detail);
 
         //Obtenemos el Extra que contiene el username
-        username = getIntent().getExtras().getString("keyUser");
+        username = getIntent().getExtras().getString(Key.KEY_USER);
 
         //Obtenemos el Extra que contiene el último inicio de sesión. //Ejercicio 2
-        session = getIntent().getExtras().getString("keyLastSession");
+        session = getIntent().getExtras().getString(Key.KEY_LAST_SESSION);
 
+        //Setemos el escucha de los botones
         findViewById(R.id.detail_btnFragmentA).setOnClickListener(this);
         findViewById(R.id.detail_btnFragmentB).setOnClickListener(this);
 
-        //Para usar el service
+        //Aquí pondremos el tiempo acumulado de uso de la App
         txtTimer = (TextView)findViewById(R.id.detail_txtTimer);
 
-
-        //Para poner el último inicio de sesión. //Ejercicio 2
+        //Para poner el último inicio de sesión del usuario logueado. //Ejercicio 2
         if(TextUtils.isEmpty(session))
-            session = getString(R.string.detail_txtFirstSession);
+            session = String.format(getString(R.string.detail_txtLastSession),
+                    getString(R.string.detail_txtFirstSession));
         else
             session = String.format(getString(R.string.detail_txtLastSession), session);
 
@@ -71,12 +72,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         txtLastSession.setText(session);
 
         //Ejercicio 2
-        preferenceUseApp = new PreferenceUseApp(getApplicationContext());
-        String useTimeApp = preferenceUseApp.getUseTime();
+        preferenceUtil = new PreferenceUtil(getApplicationContext());
+        String useTimeApp = preferenceUtil.getUseTime();
         txtTimer.setText(getString(R.string.detail_txtUseTime) + useTimeFormat(useTimeApp));
     }
 
-    //Ejercicio 2
+    //Formateamos la cadena que se le mostrará al usuario en relación al tiempo
+    // de uso total de la App. //Ejercicio 2
     private String useTimeFormat(String useTimeApp) {
         Long seconds = Long.parseLong(useTimeApp);
         int day = 0;
@@ -90,7 +92,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         minute = (int)(seconds/MINUTE);
         seconds = seconds% MINUTE;
 
-        return String.format(" %sd, %sh, %sm, %ss", day, hour, minute, seconds);
+        return String.format(" %sd, %sh %sm %ss", day, hour, minute, seconds);
     }
 
     @Override
@@ -124,26 +126,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceTimer.ACTION_SEND_TIMER);
-        //filter.addAction(BatteryManager.ACTION_CHARGING);
         registerReceiver(broadcastReceiver,filter);
-        //Log.d(ServiceTimer.TAG,"OnResume, se reinicia boradcast");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //Log.d(ServiceTimer.TAG,"onPause quitando broadcast");
         unregisterReceiver(broadcastReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //Log.d(ServiceTimer.TAG,"OnDestroy, terminando servicio");
 
-        //Guardamos el valor del contador en las preferencias. Ejercicio 2
-        String newCounter = Long.toString(Long.parseLong(preferenceUseApp.getUseTime()) + counter);
-        preferenceUseApp.saveUseTime(newCounter);
+        //Guardamos (Acumulamos) el valor del contador en las preferencias. //Ejercicio 2
+        String newCounter = Long.toString(Long.parseLong(preferenceUtil.getUseTime()) + counter);
+        preferenceUtil.saveUseTime(newCounter);
 
         stopService(new Intent(getApplicationContext(),ServiceTimer.class));
     }

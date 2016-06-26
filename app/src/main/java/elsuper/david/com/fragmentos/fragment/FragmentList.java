@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import elsuper.david.com.fragmentos.model.ModelItem;
@@ -23,6 +21,7 @@ import elsuper.david.com.fragmentos.R;
 import elsuper.david.com.fragmentos.SummaryActivity;
 import elsuper.david.com.fragmentos.adapter.AdapterItemList;
 import elsuper.david.com.fragmentos.sql.ItemDataSource;
+import elsuper.david.com.fragmentos.util.Key;
 
 /**
  * Created by Andrés David García Gómez
@@ -30,16 +29,15 @@ import elsuper.david.com.fragmentos.sql.ItemDataSource;
 public class FragmentList extends Fragment {
 
     private ListView listView;
-    //private List<ModelItem> array = new ArrayList<>();//se comenta para usar la tabla item_table
     private int counter;
     private boolean isWifi;
     //Para usar la tabla item_table
     private ItemDataSource itemDataSource;
 
-    //Para usar la tabla item_table
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Instanciamos para usar la tabla item_table
         itemDataSource = new ItemDataSource(getActivity());
     }
 
@@ -57,25 +55,26 @@ public class FragmentList extends Fragment {
                 //Accedemos a la información del item
                 AdapterItemList adapter = (AdapterItemList)parent.getAdapter();
                 ModelItem modelItem = adapter.getItem(position);
+
                 //ModelItem modelItem2 = array.get(position); Para obtener los datos del Ejercicio1
                 //Toast.makeText(getActivity(),modelItem.title, Toast.LENGTH_SHORT).show();
 
                 //Lo mandamos a la activity de Resumen y agregamos Extras
                 Intent intent = new Intent(getActivity().getApplicationContext(), SummaryActivity.class);
-                intent.putExtra("key_title", modelItem.title);
-                intent.putExtra("key_description", modelItem.description);
+                intent.putExtra(Key.KEY_TITLE, modelItem.title);
+                intent.putExtra(Key.KEY_DESCRIPTION, modelItem.description);
                 //intent.putExtra("key_resourceId", modelItem2.title);
                 startActivity(intent);
             }
         });
 
-        //Bloque para usar la tabla item_table
+        //Obtenemos los items de la tabla item_table
         List<ModelItem> modelItemList = itemDataSource.getAllItems();
         isWifi = !(modelItemList.size() %2 == 0);
         counter = modelItemList.size();
         listView.setAdapter(new AdapterItemList(getActivity(),modelItemList));
 
-        //Bloque para borrar el registro seleccionado
+        //Bloque para borrar el registro seleccionado al dejar mantener el click sobre el elemento
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -104,6 +103,8 @@ public class FragmentList extends Fragment {
 
 
         final EditText etItemText = (EditText)view.findViewById(R.id.fraglist_ItemText);
+
+        //Bloque para agregar un item a la lista
         view.findViewById(R.id.fraglist_btnAddItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,13 +114,11 @@ public class FragmentList extends Fragment {
                 if(!TextUtils.isEmpty(itemData)){
                     ModelItem item = new ModelItem();
                     item.title =  itemData;
-                    //item.description = "Desc " + counter;
                     item.description = String.format(getString(R.string.fraglist_txtDescription), counter);
                     item.resourceId = isWifi ? R.mipmap.ic_launcher : R.mipmap.ic_launcher2;
-                    //array.add(item); //Para usar el adapter
-                    //Para usar la tabla item_table
+                    //Guardamos en la tabla item_table
                     itemDataSource.saveItem(item);
-                    //listView.setAdapter(new AdapterItemList(getActivity(),array)); //Para usar el adapter
+                    //Le ponemos los datos actuales
                     listView.setAdapter(new AdapterItemList(getActivity(),itemDataSource.getAllItems()));
 
                     isWifi = !isWifi;

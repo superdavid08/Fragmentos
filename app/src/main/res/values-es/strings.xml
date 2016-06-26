@@ -8,6 +8,7 @@
     <string name="main_authenticated">Autenticado</string>
     <string name="main_btnRegister">Registrar</string>
     <string name="main_txtRegisterNeed">Registro necesario</string>
+    <string name="main_cbRemember">Recordar credenciales</string>
     <string name="detail_btnFragmentA">Fragmento A</string>
     <string name="detail_btnFragmentB">Fragmento B</string>
     <string name="detail_txtSessionLenght" formatted="false">Duración de la sesión %s segundos</string>

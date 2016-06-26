@@ -5,15 +5,15 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
+
+import elsuper.david.com.fragmentos.util.Key;
 
 /**
  * Created by Andrés David García Gómez
  */
 public class ServiceTimer extends Service{
 
-    public static final String TAG = "unam_tag";
-    public static final String ACTION_SEND_TIMER = "com.unam.clase.SEND_TIMER";
+    public static final String ACTION_SEND_TIMER = "com.david.elsuper_.SEND_TIMER";
     int counter;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -23,9 +23,8 @@ public class ServiceTimer extends Service{
             handler.postDelayed(runnable,1000);
 
             Intent i = new Intent(ACTION_SEND_TIMER);
-            i.putExtra("timer", counter);
+            i.putExtra(Key.KEY_SERVICE_TIMER, counter);
             sendBroadcast(i);
-            //Log.d(TAG, "Contador " + counter);
         }
     };
 
@@ -38,14 +37,11 @@ public class ServiceTimer extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
-        //Log.d(TAG, "On create service");
         handler.post(runnable);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Log.d(TAG,"On start command");
-
         return START_STICKY;
     }
 

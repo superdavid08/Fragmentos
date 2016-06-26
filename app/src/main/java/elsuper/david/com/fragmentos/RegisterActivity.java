@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import elsuper.david.com.fragmentos.model.ModelUser;
 import elsuper.david.com.fragmentos.sql.UserDataSource;
-import elsuper.david.com.fragmentos.util.PreferenceUtil;
 
 /**
  * Created by Andrés David García Gómez
@@ -30,15 +29,17 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText etUser = (EditText)findViewById(R.id.reg_etUser);
         final EditText etPassword = (EditText)findViewById(R.id.reg_etPassword);
 
+        //Registrar al usuario
         findViewById(R.id.reg_btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String user = etUser.getText().toString();
                 String password = etPassword.getText().toString();
+
                 //Validamos que no tenga valores nulos
                 if(!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)){
 
-                    //Validamos que no exista. //Ejercicio 2
+                    //Validamos que no exista el username (login) en la BD. //Ejercicio 2
                     if(userDataSource.getUser(user) != null) {
                         Toast.makeText(getApplicationContext(),
                                 String.format(getString(R.string.reg_txtUserExist), user),
@@ -46,13 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
                         return;
                     }
 
-                    //Ejercicio 2
-                    long success = userDataSource.saveUser(new ModelUser(user,password,"firstTime"));
-
-                    /*
-                    //Descomentar para que se registre el usuario en Preferencias
-                    PreferenceUtil preferenceUtil = new PreferenceUtil(getApplicationContext());
-                    boolean success = preferenceUtil.saveUser(new ModelUser(user,password));*/
+                    //Guardamos al usuario en DB Ejercicio 2
+                    long success = userDataSource.saveUser(new ModelUser(user,password,""));
 
                     if(success != -1)
                         Toast.makeText(getApplicationContext(),R.string.reg_txtSuccess, Toast.LENGTH_SHORT).show();
