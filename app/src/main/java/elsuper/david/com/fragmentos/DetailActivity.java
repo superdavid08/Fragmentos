@@ -57,6 +57,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         //Setemos el escucha de los botones
         findViewById(R.id.detail_btnFragmentA).setOnClickListener(this);
         findViewById(R.id.detail_btnFragmentB).setOnClickListener(this);
+        findViewById(R.id.detail_btnSession).setOnClickListener(this); //Ejercicio 2
+
 
         //Aquí pondremos el tiempo acumulado de uso de la App
         txtTimer = (TextView)findViewById(R.id.detail_txtTimer);
@@ -92,7 +94,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         minute = (int)(seconds/MINUTE);
         seconds = seconds% MINUTE;
 
-        return String.format(" %sd, %sh %sm %ss", day, hour, minute, seconds);
+        return String.format(" %sd %sh %sm %ss", day, hour, minute, seconds);
     }
 
     @Override
@@ -103,6 +105,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.detail_btnFragmentB:
                 changeFragmentB();
+                break;
+            case R.id.detail_btnSession:
+                //Ejercicio 2
+                //Borramos el usuario y password del archivo de preferencias (credenciales recordadas)
+                // y salimos.
+                preferenceUtil.deleteUser();
+                finish();
                 break;
         }
     }

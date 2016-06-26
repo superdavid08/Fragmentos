@@ -14,6 +14,7 @@
     <string name="detail_txtLastSession" formatted="false">Last signed %s</string>
     <string name="detail_txtFirstSession">First time</string>
     <string name="detail_txtUseTime">Total time use</string>
+    <string name="detail_btnSession">Sign off</string>
     <string name="fraglist_btnAdd">Add</string>
     <string name="fraglist_hintItemText">Item text</string>
     <string name="fraglist_txtDeleteTitle">Delete</string>
